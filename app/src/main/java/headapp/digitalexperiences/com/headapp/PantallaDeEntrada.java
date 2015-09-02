@@ -1,24 +1,14 @@
 package headapp.digitalexperiences.com.headapp;
 
-import android.app.Activity;
-import android.app.Fragment;
-import android.app.FragmentManager;
+
 import android.graphics.drawable.Drawable;
 import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
-import android.view.View;
-import android.widget.TabHost;
-import android.widget.Toast;
 import android.support.v4.view.ViewPager;
-import Tabs.SlidingTabLayout;
 import it.neokree.materialtabs.MaterialTab;
 import it.neokree.materialtabs.MaterialTabHost;
 import it.neokree.materialtabs.MaterialTabListener;
@@ -32,8 +22,6 @@ public class PantallaDeEntrada extends AppCompatActivity implements MaterialTabL
     private MaterialTabHost tabs;
 
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,7 +32,6 @@ public class PantallaDeEntrada extends AppCompatActivity implements MaterialTabL
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         getSupportActionBar().setLogo(R.mipmap.ic_launcher);
         getSupportActionBar().setTitle("");
-        getSupportActionBar().hide();
 
 
 
@@ -97,6 +84,8 @@ public class PantallaDeEntrada extends AppCompatActivity implements MaterialTabL
     @Override
     public void onTabSelected(MaterialTab materialTab) {
 
+        pager.setCurrentItem(materialTab.getPosition());
+
     }
 
     @Override
@@ -106,6 +95,7 @@ public class PantallaDeEntrada extends AppCompatActivity implements MaterialTabL
 
     @Override
     public void onTabUnselected(MaterialTab materialTab) {
+
 
     }
 

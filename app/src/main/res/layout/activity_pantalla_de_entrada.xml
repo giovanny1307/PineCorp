@@ -21,14 +21,14 @@
         android:layout_height="48dp"
         app:iconColor="#FFFFFF"
         app:primaryColor="@color/colorPrimario"
-        app:accentColor="@color/tabsScrollColor"
+        app:accentColor="#FFFFFF"
         app:hasIcons="true"/>
 
     <android.support.v4.view.ViewPager
         android:id="@+id/pager"
-
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
         android:layout_width="match_parent"
+        android:layout_below="@+id/materialTabHost"
         android:layout_weight="1"
         ></android.support.v4.view.ViewPager>
 
