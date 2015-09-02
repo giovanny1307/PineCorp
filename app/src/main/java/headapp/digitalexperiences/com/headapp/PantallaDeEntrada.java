@@ -101,7 +101,7 @@ public class PantallaDeEntrada extends AppCompatActivity implements MaterialTabL
 
     private class ViewPagerAdapter extends FragmentStatePagerAdapter {
 
-        int icons[] = {R.drawable.ic_launcher,
+        int icons[] = {R.mipmap.horadecristo,
                 R.drawable.ic_launcher,
                 R.mipmap.ic_create_white_48dp};
 
