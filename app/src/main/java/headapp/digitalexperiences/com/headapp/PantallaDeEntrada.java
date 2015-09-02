@@ -1,6 +1,10 @@
 package headapp.digitalexperiences.com.headapp;
 
 import android.app.Activity;
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.graphics.drawable.Drawable;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -11,20 +15,24 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.TabHost;
 import android.widget.Toast;
 import android.support.v4.view.ViewPager;
 import Tabs.SlidingTabLayout;
+import it.neokree.materialtabs.MaterialTab;
+import it.neokree.materialtabs.MaterialTabHost;
+import it.neokree.materialtabs.MaterialTabListener;
 
 
-public class PantallaDeEntrada extends AppCompatActivity {
+public class PantallaDeEntrada extends AppCompatActivity implements MaterialTabListener {
 
 
     private Toolbar toolbar;
-    ViewPager pager;
-    ViewPagerAdapter adapter;
-    SlidingTabLayout tabs;
-    CharSequence Titles[]={"Time","Main","Messages"};
-    int Numboftabs =3;
+    private ViewPager pager;
+    private MaterialTabHost tabs;
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,28 +49,26 @@ public class PantallaDeEntrada extends AppCompatActivity {
 
 
 
-        // Creating The ViewPagerAdapter and Passing Fragment Manager, Titles fot the Tabs and Number Of Tabs.
-        adapter =  new ViewPagerAdapter(getSupportFragmentManager(),Titles,Numboftabs);
+       tabs= (MaterialTabHost) findViewById(R.id.materialTabHost);
+       pager= (ViewPager) findViewById(R.id.pager);
+       ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
 
-        // Assigning ViewPager View and setting the adapter
-        pager = (ViewPager) findViewById(R.id.pager);
-        pager.setAdapter(adapter);
+       pager.setAdapter(adapter);
+       pager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener(){
 
-        // Assiging the Sliding Tab Layout View
-        tabs = (SlidingTabLayout) findViewById(R.id.tabs);
-        tabs.setDistributeEvenly(true); // To make the Tabs Fixed set this true, This makes the tabs Space Evenly in Available width
+           @Override
+           public void onPageSelected(int position) {
+               tabs.setSelectedNavigationItem(position);
+           }
+       });
 
-        tabs.setCustomTabView(R.layout.t);
-        // Setting Custom Color for the Scroll bar indicator of the Tab View
-        tabs.setCustomTabColorizer(new SlidingTabLayout.TabColorizer() {
-            @Override
-            public int getIndicatorColor(int position) {
-                return getResources().getColor(R.color.tabsScrollColor);
-            }
-        });
-
-        // Setting the ViewPager For the SlidingTabsLayout
-        tabs.setViewPager(pager);
+        for (int i = 0; i < adapter.getCount(); i++) {
+            tabs.addTab(
+                    tabs.newTab()
+                            .setIcon(adapter.getIcon(i))
+                            .setTabListener(this)
+            );
+        }
 
     }
 
@@ -86,5 +92,61 @@ public class PantallaDeEntrada extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onTabSelected(MaterialTab materialTab) {
+
+    }
+
+    @Override
+    public void onTabReselected(MaterialTab materialTab) {
+
+    }
+
+    @Override
+    public void onTabUnselected(MaterialTab materialTab) {
+
+    }
+
+    private class ViewPagerAdapter extends FragmentStatePagerAdapter {
+
+        int icons[] = {R.drawable.ic_launcher,
+                R.drawable.ic_launcher,
+                R.drawable.ic_launcher};
+
+
+        public ViewPagerAdapter(android.support.v4.app.FragmentManager fm){
+
+            super(fm);
+        }
+
+        public android.support.v4.app.Fragment getItem(int num){
+            if(num == 0) // if the position is 0 we are returning the First tab
+            {
+                AjusteTiempos tab1 = new AjusteTiempos();
+                return tab1;
+            }
+            else if(num == 1)             // As we are having 2 tabs if the position is now 0 it must be 1 so we are returning second tab
+            {
+                HeadApp tab2 = new HeadApp();
+                return tab2;
+            }
+            else
+            {
+                Mensajes tab3 = new Mensajes();
+                return tab3;
+            }
+        }
+
+        public int getCount() {
+            return 3;
+        }
+
+        private Drawable getIcon(int position){
+
+           return getResources().getDrawable(icons[position]);
+        }
+
     }
 }
