@@ -103,7 +103,7 @@ public class PantallaDeEntrada extends AppCompatActivity implements MaterialTabL
 
         int icons[] = {R.drawable.ic_launcher,
                 R.drawable.ic_launcher,
-                R.drawable.ic_launcher};
+                R.mipmap.ic_create_white_48dp};
 
 
         public ViewPagerAdapter(android.support.v4.app.FragmentManager fm){
