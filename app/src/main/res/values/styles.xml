@@ -6,7 +6,7 @@
     <style name="AppTheme" parent="Theme.AppCompat.NoActionBar">
         <item name="colorPrimary">@color/colorPrimario</item>
         <item name="colorPrimaryDark">@color/colorPrimarioOscuro</item>
-        <item name="android:icon">@mipmap/ic_launcher</item>
+        <item name="android:icon">@mipmap/ic_launcherhapp</item>
     </style>
 
 </resources>

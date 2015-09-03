@@ -30,24 +30,24 @@ public class PantallaDeEntrada extends AppCompatActivity implements MaterialTabL
         toolbar = (Toolbar) findViewById(R.id.tool_bar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-        getSupportActionBar().setLogo(R.mipmap.ic_launcher);
+        getSupportActionBar().setLogo(R.mipmap.ic_launcherhapp);
         getSupportActionBar().setTitle("");
 
 
 
 
-       tabs= (MaterialTabHost) findViewById(R.id.materialTabHost);
-       pager= (ViewPager) findViewById(R.id.pager);
-       ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
+        tabs= (MaterialTabHost) findViewById(R.id.materialTabHost);
+        pager= (ViewPager) findViewById(R.id.pager);
+        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
 
-       pager.setAdapter(adapter);
-       pager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener(){
+        pager.setAdapter(adapter);
+        pager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener(){
 
-           @Override
-           public void onPageSelected(int position) {
-               tabs.setSelectedNavigationItem(position);
-           }
-       });
+            @Override
+            public void onPageSelected(int position) {
+                tabs.setSelectedNavigationItem(position);
+            }
+        });
 
         for (int i = 0; i < adapter.getCount(); i++) {
             tabs.addTab(
@@ -135,7 +135,7 @@ public class PantallaDeEntrada extends AppCompatActivity implements MaterialTabL
 
         private Drawable getIcon(int position){
 
-           return getResources().getDrawable(icons[position]);
+            return getResources().getDrawable(icons[position]);
         }
 
     }
