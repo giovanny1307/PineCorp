@@ -5,13 +5,12 @@
     android:orientation="vertical"
     android:weightSum="1" >
 
-    <ListView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/listView"
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentTop="true"
-        android:background="#000000"/>
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="vertical"/>
+
 
     <LinearLayout
         android:layout_width="fill_parent"
@@ -36,11 +35,13 @@
             android:id="@+id/btn_send"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@mipmap/ic_create_white_48dp"
+            android:src="@mipmap/ic_launcherhapp"
             android:background="@color/colorBackground"
             android:cropToPadding="true" />
 
     </LinearLayout>
+
+
 
 
 
