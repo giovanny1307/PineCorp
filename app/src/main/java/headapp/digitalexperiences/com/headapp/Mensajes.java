@@ -25,6 +25,8 @@ import java.util.List;
 
 public class Mensajes extends Fragment  {
 
+    private View v;
+
     private RecyclerView mRecyclerView;
     private Adapter mAdapter;
 
@@ -35,39 +37,39 @@ public class Mensajes extends Fragment  {
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        final View v =inflater.inflate(R.layout.tab_3,container,false);
-        mText = (EditText) v.findViewById(R.id.iputmensajes);
-        mButton = (ImageButton) v.findViewById(R.id.btn_send);
 
+        if (v == null){v =inflater.inflate(R.layout.tab_3,container,false);
+            mText = (EditText) v.findViewById(R.id.iputmensajes);
+            mButton = (ImageButton) v.findViewById(R.id.btn_send);
 
+            mRecyclerView = (RecyclerView)v.findViewById(R.id.recycler);
+            mRecyclerView.setHasFixedSize(true);
 
-        mRecyclerView = (RecyclerView)v.findViewById(R.id.recycler);
-        mRecyclerView.setHasFixedSize(true);
+            LinearLayoutManager llm = new LinearLayoutManager(getActivity().getBaseContext());
+            mRecyclerView.setLayoutManager(llm);
 
-        LinearLayoutManager llm = new LinearLayoutManager(getActivity().getBaseContext());
-        mRecyclerView.setLayoutManager(llm);
+            mButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View w) {
 
-        mButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View w) {
+                    Data dataToAdd = new Data(mText.getText().toString());
+                    mData.add(dataToAdd);
+                    mAdapter.updateList(mData);
 
-                Data dataToAdd = new Data(mText.getText().toString());
-                mData.add(dataToAdd);
-                mAdapter.updateList(mData);
+                }
+            });
 
-            }
-        });
+            // Setting the adapter.
+            mAdapter = new Adapter(mData);
+            mRecyclerView.setAdapter(mAdapter);
 
-        // Setting the adapter.
-        mAdapter = new Adapter(mData);
-        mRecyclerView.setAdapter(mAdapter);
-
-
+            } else { ((ViewGroup) v.getParent()).removeView(v);}
 
         return v;
 
-
     }
+
+
 
     public void addItem(View view) {
 
