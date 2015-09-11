@@ -4,6 +4,15 @@ package headapp.digitalexperiences.com.headapp;
  * Created by Giovanny on 9/1/2015.
  */
 
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
+import android.support.v4.widget.CursorAdapter;
+import android.content.ContentUris;
+import android.content.ContentValues;
+
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -13,18 +22,17 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import headapp.digitalexperiences.com.headapp.provider.TaskProvider;
 
-public class Mensajes extends Fragment  {
+
+public class Mensajes extends Fragment implements LoaderManager.LoaderCallbacks <Cursor>{
 
     private View v;
 
@@ -33,7 +41,11 @@ public class Mensajes extends Fragment  {
 
     private ImageButton mButton;
     private EditText mText;
-    BaseDeDatos miDb;
+
+    public static final String EXTRA_MENSAJEID = "mensajeId";
+
+    long mensajeId;
+
 
     private List<Data> mData = new ArrayList<>();
 
@@ -41,7 +53,11 @@ public class Mensajes extends Fragment  {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        miDb = new BaseDeDatos(getActivity().getBaseContext());
+
+        mAdapter = new Adapter(mData);
+
+        getLoaderManager().initLoader(0, null, this);
+
         Log.i("Left", "onCreate()");
     }
 
@@ -62,15 +78,13 @@ public class Mensajes extends Fragment  {
                 @Override
                 public void onClick(View w) {
 
-                    Data dataToAdd = new Data(mText.getText().toString());
-                    mData.add(dataToAdd);
-                    mAdapter.updateList(mData);
+                    save();
 
                 }
             });
 
             // Setting the adapter.
-            mAdapter = new Adapter(mData);
+
             mRecyclerView.setAdapter(mAdapter);
 
             } else { ((ViewGroup) v.getParent()).removeView(v);}
@@ -80,19 +94,43 @@ public class Mensajes extends Fragment  {
     }
 
 
+    private void save() {
 
-    public void addItem(View view) {
+           String mensajeUser =    mText.getText().toString();
 
-        // Add data locally to the list.
-        Data dataToAdd = new Data(
-                mText.getText().toString());
-        mData.add(dataToAdd);
+        ContentValues values = new ContentValues();
+        values.put(TaskProvider.COL_MSG, mensajeUser);
 
-        mAdapter.addItem(mData.size(),dataToAdd);
+        if(mensajeId == 0 ){
+            Uri itemUri = getActivity().getContentResolver().insert(TaskProvider.CONTENT_URI, values);
+            mensajeId = ContentUris.parseId(itemUri);
+            Toast.makeText(getActivity(),"mensaje guardado 0",Toast.LENGTH_SHORT).show();
 
+
+        } else {
+            Uri itemUri = getActivity().getContentResolver().insert(TaskProvider.CONTENT_URI, values);
+            mensajeId = ContentUris.parseId(itemUri);
+            //Uri uri = ContentUris.withAppendedId(TaskProvider.CONTENT_URI, mensajeId);
+            Toast.makeText(getActivity(),"mensaje guardado",Toast.LENGTH_SHORT).show();
+        }
 
     }
 
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        return new CursorLoader(getActivity(),TaskProvider.CONTENT_URI, null, null,null, null);
+    }
 
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        mAdapter.swapCursor(null);
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+
+        mAdapter.swapCursor(null);
+
+    }
 }
 

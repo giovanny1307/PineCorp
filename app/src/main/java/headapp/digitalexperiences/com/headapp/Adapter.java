@@ -1,6 +1,7 @@
 package headapp.digitalexperiences.com.headapp;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,12 +11,32 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import headapp.digitalexperiences.com.headapp.provider.TaskProvider;
+
 /**
  * Created by Giovanny on 9/6/2015.
  */
 public class Adapter extends RecyclerView.Adapter<ViewHolder> {
 
     private List<Data> mData = new ArrayList<Data>();
+
+    Cursor cursor;
+    int mensajeColIndex;
+    int idColIndex;
+
+
+    public void swapCursor(Cursor c){
+        cursor = c;
+        if(cursor != null) {
+            cursor.moveToFirst();
+            mensajeColIndex = cursor.getColumnIndex(TaskProvider.COL_MSG);
+
+            idColIndex = cursor.getColumnIndex(TaskProvider.COL_ID);
+        }
+
+        notifyDataSetChanged();
+
+        }
 
     //constructor
     Adapter(List<Data> datos){
@@ -39,7 +60,14 @@ public class Adapter extends RecyclerView.Adapter<ViewHolder> {
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
 
-        holder.texto.setText(mData.get(position).text);
+        Context context = holder.texto.getContext();
+        long id = getItemId(position);
+
+        cursor.moveToPosition(position);
+
+            holder.texto.setText(cursor.getString(mensajeColIndex));
+
+            holder.cv.setOnClickListener();
 
     }
 
@@ -58,8 +86,5 @@ public class Adapter extends RecyclerView.Adapter<ViewHolder> {
         return mData.size();
     }
 
-   /* @Override
-    public void onAttachedToRecyclerView(RecyclerView recyclerView) {
-        super.onAttachedToRecyclerView(recyclerView);
-    }*/
+
 }

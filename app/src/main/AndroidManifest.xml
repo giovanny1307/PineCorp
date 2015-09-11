@@ -18,6 +18,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <provider
+            android:authorities="headapp.digitalexperiences.com.headapp.provider.mensajesprovider"
+            android:name="headapp.digitalexperiences.com.headapp.provider.TaskProvider"
+            />
     </application>
 
 </manifest>
