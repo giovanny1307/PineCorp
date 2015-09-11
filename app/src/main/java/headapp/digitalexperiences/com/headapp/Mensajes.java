@@ -9,6 +9,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,8 +33,17 @@ public class Mensajes extends Fragment  {
 
     private ImageButton mButton;
     private EditText mText;
+    BaseDeDatos miDb;
 
     private List<Data> mData = new ArrayList<>();
+
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        miDb = new BaseDeDatos(getActivity().getBaseContext());
+        Log.i("Left", "onCreate()");
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -82,5 +92,7 @@ public class Mensajes extends Fragment  {
 
 
     }
+
+
 }
 
