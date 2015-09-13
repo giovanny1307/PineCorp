@@ -7,10 +7,8 @@ package headapp.digitalexperiences.com.headapp;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
-import android.support.v4.widget.CursorAdapter;
 import android.content.ContentUris;
 import android.content.ContentValues;
-
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -26,10 +24,10 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
-import java.util.ArrayList;
-import java.util.List;
+
 
 import headapp.digitalexperiences.com.headapp.provider.TaskProvider;
+
 
 
 public class Mensajes extends Fragment implements LoaderManager.LoaderCallbacks <Cursor>{
@@ -42,29 +40,30 @@ public class Mensajes extends Fragment implements LoaderManager.LoaderCallbacks 
     private ImageButton mButton;
     private EditText mText;
 
+    TaskProvider.DatabaseHelper databaseHelper;
+
     public static final String EXTRA_MENSAJEID = "mensajeId";
 
     long mensajeId;
-
-
-    private List<Data> mData = new ArrayList<>();
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mAdapter = new Adapter(mData);
+
+        mAdapter = new Adapter(getActivity().getBaseContext(),databaseHelper);
 
         getLoaderManager().initLoader(0, null, this);
 
         Log.i("Left", "onCreate()");
+
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        if (v == null){v =inflater.inflate(R.layout.tab_3,container,false);
+       v =inflater.inflate(R.layout.tab_3,container,false);
             mText = (EditText) v.findViewById(R.id.iputmensajes);
             mButton = (ImageButton) v.findViewById(R.id.btn_send);
 
@@ -73,46 +72,38 @@ public class Mensajes extends Fragment implements LoaderManager.LoaderCallbacks 
 
             LinearLayoutManager llm = new LinearLayoutManager(getActivity().getBaseContext());
             mRecyclerView.setLayoutManager(llm);
+            //mRecyclerView.setItemAnimator(new SlideInLeftAnimator());
+            mRecyclerView.setAdapter(mAdapter);
 
             mButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View w) {
 
-                    save();
+                    String mensajePara_ti = mText.getText().toString();
 
+                    if (mensajePara_ti.matches("")) {
+                        Toast.makeText(getActivity(), "introduce un mensaje valido", Toast.LENGTH_SHORT).show();
+                    } else {
+                        save();
+                    }
+                    mText.setText("");
                 }
             });
-
-            // Setting the adapter.
-
-            mRecyclerView.setAdapter(mAdapter);
-
-            } else { ((ViewGroup) v.getParent()).removeView(v);}
 
         return v;
 
     }
 
-
     private void save() {
 
-           String mensajeUser =    mText.getText().toString();
+        String mensajeUser =    mText.getText().toString();
 
         ContentValues values = new ContentValues();
         values.put(TaskProvider.COL_MSG, mensajeUser);
 
-        if(mensajeId == 0 ){
             Uri itemUri = getActivity().getContentResolver().insert(TaskProvider.CONTENT_URI, values);
             mensajeId = ContentUris.parseId(itemUri);
-            Toast.makeText(getActivity(),"mensaje guardado 0",Toast.LENGTH_SHORT).show();
-
-
-        } else {
-            Uri itemUri = getActivity().getContentResolver().insert(TaskProvider.CONTENT_URI, values);
-            mensajeId = ContentUris.parseId(itemUri);
-            //Uri uri = ContentUris.withAppendedId(TaskProvider.CONTENT_URI, mensajeId);
-            Toast.makeText(getActivity(),"mensaje guardado",Toast.LENGTH_SHORT).show();
-        }
+            //mAdapter.notifyItemInserted(mAdapter.cursor.getPosition());
 
     }
 
@@ -123,7 +114,7 @@ public class Mensajes extends Fragment implements LoaderManager.LoaderCallbacks 
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        mAdapter.swapCursor(null);
+        mAdapter.swapCursor(data);
     }
 
     @Override

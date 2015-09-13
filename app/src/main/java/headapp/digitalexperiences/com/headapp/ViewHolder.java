@@ -2,6 +2,7 @@ package headapp.digitalexperiences.com.headapp;
 
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+
 import android.view.View;
 import android.widget.TextView;
 
@@ -13,10 +14,14 @@ public class ViewHolder extends RecyclerView.ViewHolder {
     public TextView texto;
     public CardView cv;
 
-    public ViewHolder (View itemView){
+
+    public ViewHolder (CardView itemView){
         super(itemView);
+        cv = itemView;
+
         texto = (TextView)itemView.findViewById(R.id.mensaje_para_ti);
         cv = (CardView)itemView.findViewById(R.id.cv);
+
 
     }
 

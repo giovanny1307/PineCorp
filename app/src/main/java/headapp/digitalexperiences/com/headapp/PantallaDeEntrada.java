@@ -9,6 +9,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.support.v4.view.ViewPager;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.TabHost;
+
 import it.neokree.materialtabs.MaterialTab;
 import it.neokree.materialtabs.MaterialTabHost;
 import it.neokree.materialtabs.MaterialTabListener;
@@ -20,6 +23,7 @@ public class PantallaDeEntrada extends AppCompatActivity implements MaterialTabL
     private Toolbar toolbar;
     private ViewPager pager;
     private MaterialTabHost tabs;
+
 
 
     @Override
@@ -57,6 +61,10 @@ public class PantallaDeEntrada extends AppCompatActivity implements MaterialTabL
             );
         }
 
+
+
+
+
     }
 
     @Override
@@ -81,20 +89,29 @@ public class PantallaDeEntrada extends AppCompatActivity implements MaterialTabL
         return super.onOptionsItemSelected(item);
     }
 
+
+
     @Override
     public void onTabSelected(MaterialTab materialTab) {
 
         pager.setCurrentItem(materialTab.getPosition());
+        InputMethodManager imm = (InputMethodManager) getSystemService(this.INPUT_METHOD_SERVICE);
+
+        imm.hideSoftInputFromWindow(tabs.getApplicationWindowToken(),0);
 
     }
 
     @Override
     public void onTabReselected(MaterialTab materialTab) {
 
+
+
     }
 
     @Override
     public void onTabUnselected(MaterialTab materialTab) {
+
+
 
 
     }
